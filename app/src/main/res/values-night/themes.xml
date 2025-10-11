@@ -1,7 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.DilemaApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <style name="Theme.Dilema" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary branding -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+
+        <!-- Backgrounds -->
+        <item name="android:colorBackground">@color/colorBackgroundDark</item>
+        <item name="colorSurface">@color/colorSurfaceDark</item>
+
+        <!-- Text -->
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundDark</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceDark</item>
+
+        <!-- Cards -->
+        <item name="cardViewStyle">@style/Widget.Dilema.CardView.Dark</item>
+
+        <!-- Buttons -->
+        <item name="buttonStyle">@style/Widget.Dilema.Button</item>
     </style>
+
+    <!-- CardView style -->
+    <style name="Widget.Dilema.CardView.Dark" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/colorSurfaceDark</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardCornerRadius">8dp</item>
+        <!--<item name="cardStrokeColor">@color/colorCardBorderDark</item>
+        <item name="cardStrokeWidth">1dp</item>-->
+</style>
+
+<!-- Button style (reutilizado del modo claro) -->
+    <style name="Widget.Dilema.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
 </resources>

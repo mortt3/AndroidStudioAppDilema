@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "jorgemorte.com.dilemaapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "jorgemorte.com.dilemaapp"

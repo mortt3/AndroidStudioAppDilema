@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InterfazGUI.VentanaInicio"
+   >
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:padding="10dp"
+        android:layout_width="384dp"
+        android:layout_height="153dp"
+        android:layout_marginTop="40dp"
+        android:rotationX="14"
+        android:scaleX="1"
+        android:src="@drawable/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Contenedor input de nombre + botón + -->
+    <LinearLayout
+        android:id="@+id/inputContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/linear_bordered_background"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+        <EditText
+            android:id="@+id/txtNombreJugador"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-black"
+            android:background="@null"
+            android:hint="Escribe tu nombre"
+            android:inputType="textPersonName"
+            android:padding="14dp"
+            android:textSize="22dp" />
+
+        <Button
+            android:id="@+id/btnAgregar"
+            android:layout_width="47dp"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:layout_marginBottom="13dp"
+            android:background="@drawable/btn_circle_orange"
+            android:text="+"
+            android:textColor="@color/colorBackgroundDark"
+            android:textSize="24dp"
+            android:fontFamily="sans-serif-black"
+            tools:src="@drawable/ic_action_name" />
+
+
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_marginHorizontal="90dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputContainer">
+
+        <!-- Lista dinámica donde agregarás jugadores -->
+        <LinearLayout
+            android:id="@+id/listaJugadores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="10dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnJugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_background"
+        android:text="¡Jugar!"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:paddingHorizontal="60dp"
+        android:paddingVertical="8dp"
+        android:onClick="btnJugarClick()"
+        android:fontFamily="sans-serif-black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

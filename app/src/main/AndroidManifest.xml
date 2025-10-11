@@ -10,10 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DilemaApp"
+        android:theme="@style/Theme.Dilema"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".InterfazGUI.VentanaSelecionarJuego"
+            android:exported="false" />
+        <activity
+            android:name=".InterfazGUI.VentanaInicio"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
