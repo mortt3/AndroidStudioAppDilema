@@ -49,7 +49,7 @@ public class VentanaSelecionarJuego extends AppCompatActivity {
     }
 
     private void cargarJuegosDesdeDB() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        net.sqlcipher.database.SQLiteDatabase db = dbHelper.openDatabase("");
         Cursor cursor = db.rawQuery("SELECT * FROM TipoJuego", null);
 
         while (cursor.moveToNext()) {

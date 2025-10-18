@@ -2,8 +2,8 @@ package jorgemorte.com.dilemaapp.DB;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,11 @@ public class JugadorHelper {
     private SQLiteDatabase db;
 
     public JugadorHelper(Context context) {
+        // Cargar librerías de SQLCipher
+        SQLiteDatabase.loadLibs(context);
+
         DBHelper dbHelper = new DBHelper(context);
-        db = dbHelper.getWritableDatabase();
+        db = dbHelper.getWritableDatabase(""); // <--- Base de datos SIN clave
     }
 
     public boolean existeJugador(String nombre) {
@@ -46,6 +49,7 @@ public class JugadorHelper {
     public void eliminarJugador(String nombre) {
         db.delete("Jugador", "nombre = ?", new String[]{nombre});
     }
+
     public List<Player> getAllJugadores() {
         List<Player> jugadores = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT nombre, fechaUltimaVezJugado FROM Jugador", null);
@@ -61,4 +65,5 @@ public class JugadorHelper {
         return jugadores;
     }
 }
+
 

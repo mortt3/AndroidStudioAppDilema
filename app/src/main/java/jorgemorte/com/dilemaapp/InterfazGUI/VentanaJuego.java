@@ -80,7 +80,8 @@ public class VentanaJuego extends AppCompatActivity {
     }
 
     private String obtenerNombreJuego() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        net.sqlcipher.database.SQLiteDatabase db = dbHelper.openDatabase("");
+
         String nombreJuego = "Juego no encontrado";
 
         String query = "SELECT nombre FROM TipoJuego WHERE id = ?";
@@ -97,7 +98,7 @@ public class VentanaJuego extends AppCompatActivity {
     }
 
     private void cargarPreguntasDesdeDB() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        net.sqlcipher.database.SQLiteDatabase db = dbHelper.openDatabase("");
         String query = "SELECT * FROM Dilema WHERE game_id = ? AND estiloJuego = ? AND activo = 1";
 
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(PartidaActual.gameId), PartidaActual.modo});

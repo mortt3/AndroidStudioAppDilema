@@ -46,7 +46,7 @@ public class VentanaSeleccionarModo extends AppCompatActivity {
     }
 
     private void cargarModoDesdeDB() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        net.sqlcipher.database.SQLiteDatabase db = dbHelper.openDatabase("");
         Cursor cursor = db.rawQuery("SELECT * FROM ModoJuego", null);
 
         while (cursor.moveToNext()) {

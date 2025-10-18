@@ -33,6 +33,9 @@ android {
 
 dependencies {
     implementation("com.github.yuyakaido:CardStackView:v2.3.4")
+    implementation ("net.zetetic:android-database-sqlcipher:4.5.4")
+    implementation("androidx.sqlite:sqlite:2.3.1")
+    implementation("androidx.sqlite:sqlite-framework:2.3.1")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
