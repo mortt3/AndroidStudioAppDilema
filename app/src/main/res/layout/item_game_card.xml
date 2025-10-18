@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        >
 
         <ImageView
             android:id="@+id/gameIcon"
@@ -34,14 +35,14 @@
                 android:text="Game Name"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#000000" />
+                 />
 
             <TextView
                 android:id="@+id/gameDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:textColor="#444444" />
+                />
         </LinearLayout>
     </LinearLayout>
 

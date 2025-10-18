@@ -7,42 +7,47 @@
     >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="200dp"
+        android:layout_height="270dp"
+        android:layout_gravity="center"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="16dp">
-        <ImageView
-            android:id="@+id/gameIcon"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:contentDescription="Game Icon"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_action_name" />
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="106dp"
-            android:layout_marginStart="16dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="vertical"
+
             android:paddingVertical="10dp">
 
             <TextView
-                android:id="@+id/gameTitle"
+                android:id="@+id/gamePregunta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Game Name"
-                android:textSize="18sp"
+                android:text="PREGUNTA"
+                android:textSize="28dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/gameDescription"
+                android:id="@+id/txtActivarTabu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description" />
+                android:paddingTop="10dp"
+                android:text="PALABRAS TABU"
+                android:textColor="@color/colorPrimaryVariant"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/gameTabu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:paddingVertical="10dp"
+                android:text="palabras tabu"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

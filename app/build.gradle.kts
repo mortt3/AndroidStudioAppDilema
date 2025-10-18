@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.github.yuyakaido:CardStackView:v2.3.4")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

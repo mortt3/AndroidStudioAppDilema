@@ -65,8 +65,8 @@ public class VentanaSeleccionarModo extends AppCompatActivity {
 
             icon.setImageResource(R.drawable.ic_action_name);
 
-            // Guardar el id en la tarjeta para recuperarlo luego
-            card.setTag(id);
+            // Guardar el nombre del modo en la tarjeta para recuperarlo luego
+            card.setTag(nombre);
 
             // Poner listener para detectar clic en la tarjeta
             card.setOnClickListener(v -> {
@@ -78,10 +78,8 @@ public class VentanaSeleccionarModo extends AppCompatActivity {
                 PartidaActual.modo = modoNombreSeleccionado;
 
                 // Luego  pasar a la siguiente pantalla
-                //
-
-
-
+                Intent intent = new Intent(VentanaSeleccionarModo.this, VentanaJuego.class);
+                startActivity(intent);
             });
 
             gameListContainer.addView(card);
