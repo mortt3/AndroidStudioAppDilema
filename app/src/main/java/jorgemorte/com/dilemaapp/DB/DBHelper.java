@@ -44,6 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private void ensureDatabaseIsCopied() throws IOException {
         String dbPath = context.getDatabasePath(DATABASE_NAME).getPath();
+        System.out.println("DB PATH: " + dbPath);
         File dbFile = new File(dbPath);
 
         File dir = new File(dbFile.getParent());
@@ -80,21 +81,32 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return Instancia de SQLiteDatabase o null si falla.
      */
     public SQLiteDatabase getEncryptedWritableDatabase(String password) {
+        // Asegúrate de haber inicializado esta variable correctamente antes
         String dbPath = context.getDatabasePath(DATABASE_NAME).getPath();
 
         try {
-            ensureDatabaseIsCopied();
+            ensureDatabaseIsCopied(); // Copia la base de datos desde assets si es necesario
         } catch (IOException e) {
             Log.e(TAG, "DB_ERROR_COPY: Falló la copia. ¿El archivo está en 'assets'?", e);
             return null;
         }
 
         try {
-            // Usamos openDatabase de SQLCipher para descifrar y abrir.
-            return SQLiteDatabase.openDatabase(dbPath, password, null,
-                    SQLiteDatabase.OPEN_READWRITE | SQLiteDatabase.NO_LOCALIZED_COLLATORS);
+            // Cargar las librerías nativas de SQLCipher (una sola vez en la app, por ejemplo en Application.onCreate)
+            SQLiteDatabase.loadLibs(context);
+
+            // Abrir la base de datos cifrada con la contraseña proporcionada
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(
+                    dbPath,
+                    password,
+                    null,
+                    SQLiteDatabase.OPEN_READWRITE
+            );
+
+            return db;
+
         } catch (Exception e) {
-            Log.e(TAG, "DB_ERROR_CIPHER: Clave INCORRECTA o DB corrupta/sin cifrar. Clave usada: '" + password + "'.", e);
+            Log.e(TAG, "DB_ERROR_CIPHER: Clave INCORRECTA o DB corrupta/sin cifrar.", e);
             return null;
         }
     }
