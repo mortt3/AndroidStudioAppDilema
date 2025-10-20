@@ -3,8 +3,8 @@ package jorgemorte.com.dilemaapp.InterfazGUI;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 // Si usas CardView
 import androidx.cardview.widget.CardView;
 
+import net.sqlcipher.database.SQLiteDatabase; // Importación necesaria para el objeto DB de SQLCipher
 
 import jorgemorte.com.dilemaapp.DB.DBHelper;
 import jorgemorte.com.dilemaapp.R;
@@ -28,6 +29,9 @@ public class VentanaSelecionarJuego extends AppCompatActivity {
     LinearLayout gameListContainer;
     LayoutInflater inflater;
     DBHelper dbHelper;
+
+    // Clave de la base de datos definida
+    private static final String DB_PASSWORD = "1234";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,59 +46,76 @@ public class VentanaSelecionarJuego extends AppCompatActivity {
         btnVolver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //dispose  esta pagina y volver a la ventana de inicio
+                // dispose  esta pagina y volver a la ventana de inicio
                 finish();
             }
         });
     }
 
     private void cargarJuegosDesdeDB() {
-        net.sqlcipher.database.SQLiteDatabase db = dbHelper.openDatabase("");
-        Cursor cursor = db.rawQuery("SELECT * FROM TipoJuego", null);
+        // Inicializar variables para asegurar el cierre
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
 
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));  // Obtener el ID
-            String nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"));
-            String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"));
+        try {
+            // ⭐ USAMOS EL MÉTODO getEncryptedWritableDatabase CORREGIDO
+            db = dbHelper.getEncryptedWritableDatabase(DB_PASSWORD);
 
-            View card = inflater.inflate(R.layout.item_game_card, gameListContainer, false);
+            if (db == null) {
+                Log.e("DB_GAME_LOAD", "Fallo al abrir DB para cargar juegos.");
+                Toast.makeText(this, "Error: No se pudo conectar a la base de datos.", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-            TextView title = card.findViewById(R.id.gameTitle);
-            TextView desc = card.findViewById(R.id.gameDescription);
-            ImageView icon = card.findViewById(R.id.gameIcon);
+            cursor = db.rawQuery("SELECT * FROM TipoJuego", null);
 
-            title.setText(nombre);
-            desc.setText(descripcion);
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));  // Obtener el ID
+                String nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"));
+                String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"));
 
-            icon.setImageResource(R.drawable.ic_action_name);
+                View card = inflater.inflate(R.layout.item_game_card, gameListContainer, false);
 
-            // Guardar el id en la tarjeta para recuperarlo luego
-            card.setTag(id);
+                TextView title = card.findViewById(R.id.gameTitle);
+                TextView desc = card.findViewById(R.id.gameDescription);
+                ImageView icon = card.findViewById(R.id.gameIcon);
 
-            // Poner listener para detectar clic en la tarjeta
-            card.setOnClickListener(v -> {
-                int juegoIdSeleccionado = (int) v.getTag();
-                // Aquí haces lo que necesites con el id seleccionado, ejemplo:
-                Toast.makeText(this, "Juego seleccionado con ID: " + juegoIdSeleccionado, Toast.LENGTH_SHORT).show();
+                title.setText(nombre);
+                desc.setText(descripcion);
 
-                // Guardar en PartidaActual si quieres
-                PartidaActual.gameId = juegoIdSeleccionado;
+                icon.setImageResource(R.drawable.ic_action_name);
 
-                // Luego puedes pasar a la siguiente pantalla, por ejemplo:
-                Intent intent = new Intent(VentanaSelecionarJuego.this, VentanaSeleccionarModo.class);
-                startActivity(intent);
-            });
+                // Guardar el id en la tarjeta para recuperarlo luego
+                card.setTag(id);
 
-            gameListContainer.addView(card);
+                // Poner listener para detectar clic en la tarjeta
+                card.setOnClickListener(v -> {
+                    int juegoIdSeleccionado = (int) v.getTag();
+                    // Aquí haces lo que necesites con el id seleccionado, ejemplo:
+                    Toast.makeText(this, "Juego seleccionado con ID: " + juegoIdSeleccionado, Toast.LENGTH_SHORT).show();
+
+                    // Guardar en PartidaActual si quieres
+                    PartidaActual.gameId = juegoIdSeleccionado;
+
+                    // Luego puedes pasar a la siguiente pantalla, por ejemplo:
+                    Intent intent = new Intent(VentanaSelecionarJuego.this, VentanaSeleccionarModo.class);
+                    startActivity(intent);
+                });
+
+                gameListContainer.addView(card);
+            }
+        } catch (Exception e) {
+            Log.e("DB_GAME_LOAD", "Error al cargar juegos.", e);
+            Toast.makeText(this, "Error al leer datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        } finally {
+            // Asegurar el cierre de recursos
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
         }
-
-        cursor.close();
-        db.close();
-    }
-
-
-    private void selecionarJugo(){
-
     }
 
 }

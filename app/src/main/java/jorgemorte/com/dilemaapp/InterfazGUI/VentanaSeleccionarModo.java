@@ -2,8 +2,8 @@ package jorgemorte.com.dilemaapp.InterfazGUI;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -12,11 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import net.sqlcipher.database.SQLiteDatabase; // Importación necesaria para el objeto DB
 
 import jorgemorte.com.dilemaapp.DB.DBHelper;
 import jorgemorte.com.dilemaapp.R;
@@ -26,6 +24,10 @@ public class VentanaSeleccionarModo extends AppCompatActivity {
     private DBHelper dbHelper;
     private LinearLayout gameListContainer;
     private LayoutInflater inflater;
+
+    // Clave de la base de datos definida
+    private static final String DB_PASSWORD = "1234";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,56 +38,78 @@ public class VentanaSeleccionarModo extends AppCompatActivity {
         cargarModoDesdeDB();
         ImageButton btnVolver = findViewById(R.id.btnVolver);
         btnVolver.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        finish();
-                    }
-                }
+                                         @Override
+                                         public void onClick(View view) {
+                                             finish();
+                                         }
+                                     }
         );
 
     }
 
     private void cargarModoDesdeDB() {
-        net.sqlcipher.database.SQLiteDatabase db = dbHelper.openDatabase("");
-        Cursor cursor = db.rawQuery("SELECT * FROM ModoJuego", null);
+        // Inicializar variables para asegurar el cierre
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
 
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-            String nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"));
-            String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"));
+        try {
+            // ⭐ USAMOS EL MÉTODO getEncryptedWritableDatabase CORREGIDO
+            db = dbHelper.getEncryptedWritableDatabase(DB_PASSWORD);
 
-            View card = inflater.inflate(R.layout.item_mode_card, gameListContainer, false);
+            if (db == null) {
+                Log.e("DB_MODE_LOAD", "Fallo al abrir DB para cargar modos.");
+                Toast.makeText(this, "Error: No se pudo conectar a la base de datos.", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-            TextView title = card.findViewById(R.id.gameTitle);
-            TextView desc = card.findViewById(R.id.gameDescription);
-            ImageView icon = card.findViewById(R.id.gameIcon);
+            cursor = db.rawQuery("SELECT * FROM ModoJuego", null);
 
-            title.setText(nombre);
-            desc.setText(descripcion);
+            while (cursor.moveToNext()) {
+                // int id = cursor.getInt(cursor.getColumnIndexOrThrow("id")); // No usado actualmente, se puede omitir
+                String nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"));
+                String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"));
 
-            icon.setImageResource(R.drawable.ic_action_name);
+                View card = inflater.inflate(R.layout.item_mode_card, gameListContainer, false);
 
-            // Guardar el nombre del modo en la tarjeta para recuperarlo luego
-            card.setTag(nombre);
+                TextView title = card.findViewById(R.id.gameTitle);
+                TextView desc = card.findViewById(R.id.gameDescription);
+                ImageView icon = card.findViewById(R.id.gameIcon);
 
-            // Poner listener para detectar clic en la tarjeta
-            card.setOnClickListener(v -> {
-                String modoNombreSeleccionado = (String) v.getTag();
-                // Aquí haces lo que necesites con el id seleccionado, ejemplo:
-                Toast.makeText(this, "Modo seleccionado: " + modoNombreSeleccionado, Toast.LENGTH_SHORT).show();
+                title.setText(nombre);
+                desc.setText(descripcion);
 
-                // Guardar en PartidaActual si quieres
-                PartidaActual.modo = modoNombreSeleccionado;
+                icon.setImageResource(R.drawable.ic_action_name);
 
-                // Luego  pasar a la siguiente pantalla
-                Intent intent = new Intent(VentanaSeleccionarModo.this, VentanaJuego.class);
-                startActivity(intent);
-            });
+                // Guardar el nombre del modo en la tarjeta para recuperarlo luego
+                card.setTag(nombre);
 
-            gameListContainer.addView(card);
+                // Poner listener para detectar clic en la tarjeta
+                card.setOnClickListener(v -> {
+                    String modoNombreSeleccionado = (String) v.getTag();
+                    // Aquí haces lo que necesites con el id seleccionado, ejemplo:
+                    Toast.makeText(this, "Modo seleccionado: " + modoNombreSeleccionado, Toast.LENGTH_SHORT).show();
+
+                    // Guardar en PartidaActual si quieres
+                    PartidaActual.modo = modoNombreSeleccionado;
+
+                    // Luego  pasar a la siguiente pantalla
+                    Intent intent = new Intent(VentanaSeleccionarModo.this, VentanaJuego.class);
+                    startActivity(intent);
+                });
+
+                gameListContainer.addView(card);
+            }
+        } catch (Exception e) {
+            Log.e("DB_MODE_LOAD", "Error al cargar modos de juego.", e);
+            Toast.makeText(this, "Error al leer datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        } finally {
+            // Asegurar el cierre de recursos
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
         }
-
-        cursor.close();
-        db.close();
     }
 }

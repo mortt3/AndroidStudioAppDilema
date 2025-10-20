@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,13 +39,25 @@ public class VentanaInicio extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ventana_inicio);
-
         txtNombreJugador = findViewById(R.id.txtNombreJugador);
         btnAgregar = findViewById(R.id.btnAgregar);
         Button btnJugar = findViewById(R.id.btnJugar);
         listaJugadores = findViewById(R.id.listaJugadores);
 
-        jugadorHelper = new JugadorHelper(this);
+        try {
+            // ⭐ EL PROBLEMA ESTABA AQUÍ: Al inicializar el helper
+            jugadorHelper = new JugadorHelper(this);
+
+            // Si la apertura fue exitosa en el constructor de JugadorHelper:
+            btnAgregar.setOnClickListener(v -> agregarJugador());
+            cargarJugadoresEnLista();
+
+        } catch (Exception e) {
+            // Si falla la apertura (clave incorrecta o archivo no copiado)
+            Log.e("VentanaInicio", "FALLO CRÍTICO al abrir la base de datos.", e);
+            Toast.makeText(this, "Error al cargar la base de datos. Ver Logcat.", Toast.LENGTH_LONG).show();
+            btnAgregar.setEnabled(false); // Deshabilitar interacción si la DB no funciona
+        }
 
         btnAgregar.setOnClickListener(v -> agregarJugador());
 
@@ -62,7 +77,13 @@ public class VentanaInicio extends AppCompatActivity {
 
         });
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (jugadorHelper != null) {
+            jugadorHelper.close();
+        }
+    }
 
 
     private void cargarJugadoresEnLista() {

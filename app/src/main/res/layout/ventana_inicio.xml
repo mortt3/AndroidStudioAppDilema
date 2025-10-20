@@ -100,7 +100,6 @@
         android:textColor="@android:color/black"
         android:paddingHorizontal="60dp"
         android:paddingVertical="8dp"
-        android:onClick="btnJugarClick()"
         android:fontFamily="sans-serif-black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
