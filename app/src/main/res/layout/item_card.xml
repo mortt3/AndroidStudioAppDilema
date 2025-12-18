@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
-    android:layout_height="270dp"
-    android:layout_marginHorizontal="20dp"
-    android:layout_marginBottom="12dp"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="0dp"
+    app:cardElevation="8dp"
+    app:cardUseCompatPadding="false">
 
     <LinearLayout
-        android:layout_width="200dp"
-        android:layout_height="270dp"
-        android:layout_gravity="center"
-        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        >
+        android:padding="16dp">
 
+        <!-- TÍTULO ARRIBA -->
+        <TextView
+            android:id="@+id/gameTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PREGUNTA"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginTop="40dp"
+            android:gravity="center"/>
+
+        <!-- CONTENIDO CENTRADO -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
             android:orientation="vertical"
-
-            android:paddingVertical="10dp">
-
-            <TextView
-                android:id="@+id/gamePregunta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PREGUNTA"
-                android:textSize="28dp"
-                android:textStyle="bold" />
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/txtActivarTabu"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:text="PALABRAS TABU"
                 android:textColor="@color/colorPrimaryVariant"
-                android:textStyle="bold" />
+                android:layout_margin="20dp"
+                android:text="PALABRAS TABU"
+                android:gravity="center"
+                android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/gameTabu"
-                android:layout_width="wrap_content"
+                android:id="@+id/gamePreguntas"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:paddingVertical="10dp"
-                android:text="palabras tabu"
-                android:textStyle="bold" />
+                android:gravity="center"
+                android:textStyle="bold"/>
         </LinearLayout>
-    </LinearLayout>
 
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import net.sqlcipher.database.SQLiteDatabase;
-import jorgemorte.com.dilemaapp.modelo.Player; // Asegúrate de que esta ruta sea correcta
+import jorgemorte.com.dilemaapp.modelo.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,36 +14,27 @@ import java.util.List;
 public class JugadorHelper {
 
     private static final String TAG = "JugadorHelper";
-    // ⚠️ ATENCIÓN: Esta clave DEBE coincidir con la usada para cifrar MiBase.db
     private static final String DB_PASSWORD = "1234";
 
     private SQLiteDatabase db;
     private final DBHelper dbHelper;
 
-    // 1. Constructor: Intenta abrir la DB
     public JugadorHelper(Context context) {
         this.dbHelper = new DBHelper(context);
         try {
-            // Utilizamos el método que incluye la lógica de copiado y apertura con clave
             db = dbHelper.getEncryptedWritableDatabase(DB_PASSWORD);
             if (db == null) {
-                // Esto solo se ejecuta si la apertura falló (clave incorrecta, archivo corrupto, o error de copia)
                 Log.e(TAG, "ERROR CRÍTICO: No se pudo abrir la base de datos cifrada. Revisar logs anteriores.");
-                // Podrías lanzar una RuntimeException aquí para detener la aplicación si es un fallo fatal
             }
         } catch (Exception e) {
             Log.e(TAG, "Error al inicializar JugadorHelper y abrir la DB.", e);
-            db = null; // Aseguramos que la DB quede como null si falla
+            db = null;
         }
     }
-
-    // --- Métodos de Verificación y Lectura ---
-
     public boolean existeJugador(String nombre) {
         if (db == null) return false;
         Cursor cursor = null;
         try {
-            // Usamos rawQuery para mayor compatibilidad con SQLCipher
             cursor = db.rawQuery("SELECT nombre FROM Jugador WHERE nombre = ?", new String[]{nombre});
             return cursor.moveToFirst();
         } catch (Exception e) {
@@ -95,8 +86,6 @@ public class JugadorHelper {
         return jugadores;
     }
 
-    // --- Métodos de Escritura (CRUD) ---
-
     public void insertarJugador(Player jugador) {
         if (db == null) return;
         try {
@@ -125,7 +114,6 @@ public class JugadorHelper {
         }
     }
 
-    // --- Cierre de Recursos ---
 
     public void close() {
         if (db != null && db.isOpen()) {

@@ -18,6 +18,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
     private final Context context;
 
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
+    }
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -26,11 +31,6 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase.loadLibs(context);
     }
 
-    // La base de datos ya está precargada.
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        // No se crean tablas aquí.
-    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -53,8 +53,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         if (!dbFile.exists()) {
-            Log.d(TAG, "Copiando DB (" + DATABASE_NAME + ") desde assets...");
-
             try (InputStream inputStream = context.getAssets().open(DATABASE_NAME);
                  OutputStream outputStream = new FileOutputStream(dbPath)) {
 
@@ -81,21 +79,20 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return Instancia de SQLiteDatabase o null si falla.
      */
     public SQLiteDatabase getEncryptedWritableDatabase(String password) {
-        // Asegúrate de haber inicializado esta variable correctamente antes
         String dbPath = context.getDatabasePath(DATABASE_NAME).getPath();
 
         try {
-            ensureDatabaseIsCopied(); // Copia la base de datos desde assets si es necesario
+            ensureDatabaseIsCopied(); // Copia la base de datos desde assets
         } catch (IOException e) {
             Log.e(TAG, "DB_ERROR_COPY: Falló la copia. ¿El archivo está en 'assets'?", e);
             return null;
         }
 
         try {
-            // Cargar las librerías nativas de SQLCipher (una sola vez en la app, por ejemplo en Application.onCreate)
+            // Cargar las librerías nativas de SQLCipher
             SQLiteDatabase.loadLibs(context);
 
-            // Abrir la base de datos cifrada con la contraseña proporcionada
+            // Abrir la base de datos cifrada con la contraseña
             SQLiteDatabase db = SQLiteDatabase.openDatabase(
                     dbPath,
                     password,
@@ -110,7 +107,6 @@ public class DBHelper extends SQLiteOpenHelper {
             return null;
         }
     }
-    //----------------------------------------------------IA---------------------------------------------
     // --- MÉTODOS DE UTILIDAD ---
 
     /**
@@ -134,8 +130,6 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-    // --- MÉTODOS LEGACY DE SQLITEOPENHELPER ---
-
     public net.sqlcipher.database.SQLiteDatabase getWritableDatabase() {
         // ¡No usar!
         throw new RuntimeException("ERROR: Use getEncryptedWritableDatabase(password) para la DB cifrada.");

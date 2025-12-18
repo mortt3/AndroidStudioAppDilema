@@ -33,15 +33,22 @@ public class PreguntaAdapter extends RecyclerView.Adapter<PreguntaAdapter.Pregun
     @Override
     public void onBindViewHolder(@NonNull PreguntaViewHolder holder, int position) {
         Pregunta pregunta = preguntas.get(position);
-        holder.gamePregunta.setText(pregunta.getTexto());
+        holder.gameTitulo.setText(pregunta.getTexto());
 
         if (PartidaActual.gameId == 5) {
             holder.txtActivarTabu.setVisibility(View.VISIBLE);
-            holder.gameTabu.setVisibility(View.VISIBLE);
-            holder.gameTabu.setText(pregunta.getPalabrasTaboo().replace(",","\n\n").toUpperCase());
+            holder.gamePreguntas.setVisibility(View.VISIBLE);
+            holder.gamePreguntas.setText(pregunta.getPalabrasTaboo().replace(",","\n\n").toUpperCase());
         } else {
             holder.txtActivarTabu.setVisibility(View.GONE);
-            holder.gameTabu.setVisibility(View.GONE);
+
+            holder.gamePreguntas.setVisibility(View.VISIBLE);
+            //mayusculas
+            holder.gamePreguntas.setText(pregunta.getPalabrasTaboo().toUpperCase());
+            //mas grande el texto
+            holder.gamePreguntas.setTextSize(16);
+            //separacion de lineas
+            holder.gamePreguntas.setLineSpacing(0, 1.6f);
         }
     }
 
@@ -51,12 +58,12 @@ public class PreguntaAdapter extends RecyclerView.Adapter<PreguntaAdapter.Pregun
     }
 
     static class PreguntaViewHolder extends RecyclerView.ViewHolder {
-        TextView gamePregunta, gameTabu, txtActivarTabu;
+        TextView gameTitulo, gamePreguntas, txtActivarTabu;
 
         public PreguntaViewHolder(@NonNull View itemView) {
             super(itemView);
-            gamePregunta = itemView.findViewById(R.id.gamePregunta);
-            gameTabu = itemView.findViewById(R.id.gameTabu);
+            gameTitulo = itemView.findViewById(R.id.gameTitulo);
+            gamePreguntas = itemView.findViewById(R.id.gamePreguntas);
             txtActivarTabu = itemView.findViewById(R.id.txtActivarTabu);
         }
     }
