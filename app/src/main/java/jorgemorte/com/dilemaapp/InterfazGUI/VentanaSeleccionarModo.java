@@ -53,7 +53,6 @@ public class VentanaSeleccionarModo extends AppCompatActivity {
         Cursor cursor = null;
 
         try {
-            // ⭐ USAMOS EL MÉTODO getEncryptedWritableDatabase CORREGIDO
             db = dbHelper.getEncryptedWritableDatabase(DB_PASSWORD);
 
             if (db == null) {

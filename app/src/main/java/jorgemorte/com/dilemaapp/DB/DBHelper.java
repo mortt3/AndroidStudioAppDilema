@@ -65,7 +65,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.d(TAG, "Copia completada.");
 
             } catch (IOException e) {
-                Log.e(TAG, "Error crítico al copiar la DB desde assets.", e);
                 throw new IOException("Fallo al copiar la base de datos precifrada.", e);
             }
         } else {
@@ -74,7 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * EL MÉTODO PRINCIPAL: Abre la base de datos cifrada (SQLCipher).
+     * Abre la base de datos cifrada (SQLCipher).
      * @param password La clave de cifrado.
      * @return Instancia de SQLiteDatabase o null si falla.
      */
