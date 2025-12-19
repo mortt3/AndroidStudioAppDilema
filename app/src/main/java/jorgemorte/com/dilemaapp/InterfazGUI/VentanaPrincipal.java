@@ -16,12 +16,12 @@ public class VentanaPrincipal extends AppCompatActivity {
         setContentView(R.layout.activity_ventana_principal);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        //selecionar al iniciarse el fragment de games
+        //selecionar al iniciarse el fragment de Games
         bottomNavigationView.setSelectedItemId(R.id.games);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new games()).commit();
+                    .replace(R.id.fragment_container, new Games()).commit();
         }
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -29,9 +29,9 @@ public class VentanaPrincipal extends AppCompatActivity {
 
             int id = item.getItemId();
             if (id == R.id.players) {
-                selectedFragment = new VentanaJugadores();
+                selectedFragment = new Jugadores();
             }else if (id == R.id.games) {
-                selectedFragment = new games();
+                selectedFragment = new Games();
             }
 
             if (selectedFragment != null) {

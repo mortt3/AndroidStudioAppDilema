@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +20,7 @@ import jorgemorte.com.dilemaapp.DB.DBHelper;
 import jorgemorte.com.dilemaapp.R;
 import jorgemorte.com.dilemaapp.modelo.PartidaActual;
 
-public class games extends Fragment {
+public class Games extends Fragment {
 
     // Clave de la base de datos definida
     private static final String DB_PASSWORD = "1234";
@@ -29,13 +28,13 @@ public class games extends Fragment {
     private LayoutInflater inflater;
     private DBHelper dbHelper;
 
-    public games() {
+    public Games() {
         // Constructor vacío
     }
 
     // Factory method to create a new instance of the fragment
-    public static games newInstance(String param1, String param2) {
-        games fragment = new games();
+    public static Games newInstance(String param1, String param2) {
+        Games fragment = new Games();
         Bundle args = new Bundle();
         args.putString("param1", param1);
         args.putString("param2", param2);
