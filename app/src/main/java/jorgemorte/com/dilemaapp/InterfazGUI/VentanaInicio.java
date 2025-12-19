@@ -16,8 +16,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -45,10 +43,8 @@ public class VentanaInicio extends AppCompatActivity {
         listaJugadores = findViewById(R.id.listaJugadores);
 
         try {
-            // ⭐ EL PROBLEMA ESTABA AQUÍ: Al inicializar el helper
             jugadorHelper = new JugadorHelper(this);
 
-            // Si la apertura fue exitosa en el constructor de JugadorHelper:
             btnAgregar.setOnClickListener(v -> agregarJugador());
             cargarJugadoresEnLista();
 
@@ -64,19 +60,20 @@ public class VentanaInicio extends AppCompatActivity {
         // Cargar y mostrar la lista de jugadores existentes al iniciar la Activity
         cargarJugadoresEnLista();
 
-        btnJugar.setOnClickListener (new View.OnClickListener()  {
+        btnJugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //ir a la ventana selecionar juego
-                List <Player> jugadoresSelecionados= jugadorHelper.getAllJugadores();
+                List<Player> jugadoresSelecionados = jugadorHelper.getAllJugadores();
                 PartidaActual.jugadores = jugadoresSelecionados;
 
-                Intent intent = new Intent(VentanaInicio.this, VentanaSelecionarJuego.class);
+                Intent intent = new Intent(VentanaInicio.this, VentanaPrincipal.class);
                 startActivity(intent);
             }
 
         });
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -127,7 +124,6 @@ public class VentanaInicio extends AppCompatActivity {
         builder.setPositiveButton("Continuar", (dialog, which) -> {
             txtNombreJugador.setText("");
             Toast.makeText(this, "Continuando con: " + nombre, Toast.LENGTH_SHORT).show();
-            // Aquí podrías iniciar la partida o algo similar con el jugador existente
         });
 
         builder.setNegativeButton("Reemplazar", (dialog, which) -> {
@@ -190,7 +186,7 @@ public class VentanaInicio extends AppCompatActivity {
     }
 
 
-private void eliminarJugadorDeLista(String nombre) {
+    private void eliminarJugadorDeLista(String nombre) {
         int count = listaJugadores.getChildCount();
         for (int i = 0; i < count; i++) {
             View child = listaJugadores.getChildAt(i);

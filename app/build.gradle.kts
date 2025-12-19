@@ -37,25 +37,26 @@ android {
 }
 
 dependencies {
-    // === DEPENDENCIAS DE LA APLICACIÓN ===
 
-    // 1. SQLCipher: Única librería de base de datos
+    // 1. SQLCipher
     implementation ("net.zetetic:android-database-sqlcipher:4.5.4")
 
-    // 2. Otras librerías
+    // Otras librerías
     implementation("com.github.yuyakaido:CardStackView:v2.3.4")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    // === DEPENDENCIAS DE PRUEBA ===
+    // !!!!!!!!!!!!!!! EPENDENCIAS DE PRUEBA
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    // 🛑 DEPENDENCIAS ELIMINADAS POR CONFLICTO:
+
     implementation("androidx.sqlite:sqlite:2.3.1")
-    // implementation("androidx.sqlite:sqlite-framework:2.3.1")
-    // implementation(libs.sqlite.jvm)
+
+
+    implementation("androidx.fragment:fragment-ktx:1.8.9")
+    implementation("com.google.android.material:material:1.13.0")
 }

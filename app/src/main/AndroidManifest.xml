@@ -14,13 +14,19 @@
         android:theme="@style/Theme.Dilema"
         tools:targetApi="31">
         <activity
+            android:name=".InterfazGUI.VentanaJugadores"
+            android:exported="false" />
+        <activity
+            android:name=".InterfazGUI.VentanaAjustes"
+            android:exported="false" />
+        <activity
             android:name=".InterfazGUI.VentanaJuego"
             android:exported="false" />
         <activity
             android:name=".InterfazGUI.VentanaSeleccionarModo"
             android:exported="false" />
         <activity
-            android:name=".InterfazGUI.VentanaSelecionarJuego"
+            android:name=".InterfazGUI.VentanaPrincipal"
             android:exported="false" />
         <activity
             android:name=".InterfazGUI.VentanaInicio"

@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/players"
+        android:icon="@drawable/ic_players"
+        android:title="Jugadores" />
+    <item
+        android:id="@+id/games"
+        android:icon="@drawable/ic_party"
+        android:title="Juegos" />
+    <item
+        android:id="@+id/setting"
+        android:icon="@drawable/ic_home"
+        android:title="Ajustes" />
+</menu>
+
